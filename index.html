@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fieldwork '26 Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Smooth scrolling and hide scrollbar for clean brutalist look */
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #FDF9F1; border-left: 2px solid black; }
+        ::-webkit-scrollbar-thumb { background: black; }
+
+        /* Splash Screen Animation */
+        @keyframes popIn {
+            0% { transform: scale(0.8) translateY(20px); opacity: 0; box-shadow: 0px 0px 0px 0px rgba(0,0,0,1); }
+            100% { transform: scale(1) translateY(0); opacity: 1; box-shadow: 8px 8px 0px 0px rgba(0,0,0,1); }
+        }
+        .animate-pop-in {
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="bg-[#FDF9F1] font-sans text-black relative selection:bg-cyan-300 selection:text-black min-h-screen overflow-x-hidden">
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 z-[100] bg-lime-400 flex flex-col items-center justify-center transition-all duration-700 ease-in-out px-4">
+        <div class="bg-white border-[4px] border-black p-8 sm:p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center animate-pop-in w-full max-w-sm">
+            <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tighter mb-6 leading-none">
+                Sylhet<br/>Fieldwork
+            </h1>
+            <div class="bg-black text-lime-400 font-mono font-bold text-xs sm:text-sm px-4 py-2.5 inline-block uppercase tracking-widest border-[2px] border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+                Made by Nazeef<br/><span class="text-cyan-300 text-lg">251004</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reshaped & Responsive Sticky Top Bar -->
+    <header class="sticky top-0 z-30 bg-lime-400 border-b-[3px] border-black shadow-[0px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+                
+                <!-- Title Section -->
+                <div class="flex-1 flex flex-row md:flex-col items-center md:items-start justify-between md:justify-start">
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-2 mb-0.5 sm:mb-1">
+                            <span class="inline-flex items-center gap-1 bg-black text-lime-400 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest">
+                                <i data-lucide="map-pin" stroke-width="3" class="w-2.5 h-2.5 sm:w-3 sm:h-3"></i>
+                                SYLHET
+                            </span>
+                            <span class="font-mono font-bold text-[10px] sm:text-xs uppercase tracking-tight hidden sm:inline-block">Physical Env. II</span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl md:text-3xl font-black uppercase leading-none tracking-tighter">
+                            Fieldwork '26
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Search Bar Container -->
+                <div class="relative w-full md:w-96 shrink-0">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="search" stroke-width="3" class="text-black w-4 h-4 sm:w-5 sm:h-5"></i>
+                    </div>
+                    <!-- text-base ensures iOS doesn't zoom in on input focus -->
+                    <input 
+                        type="text"
+                        id="search-input"
+                        class="block w-full pl-9 sm:pl-10 pr-10 py-2.5 sm:py-3 bg-white border-[3px] border-black rounded-lg text-base text-black font-bold placeholder-black/40 focus:outline-none focus:ring-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                        placeholder="Search ID or Name..."
+                    />
+                    <button 
+                        id="clear-btn"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-black hidden"
+                    >
+                        <i data-lucide="x" stroke-width="3" class="w-5 h-5 hover:scale-110 transition-transform"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
+        
+        <!-- Header Info -->
+        <div class="flex justify-between items-end border-b-[3px] border-black pb-2 mb-5 sm:mb-6">
+            <h2 class="font-black text-lg sm:text-xl md:text-2xl uppercase tracking-tight">Student List</h2>
+            <span id="student-count" class="font-mono text-xs sm:text-sm md:text-base font-bold bg-yellow-300 border-[2px] border-black px-2 sm:px-3 py-0.5 rounded-md shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                0 Found
+            </span>
+        </div>
+
+        <!-- Responsive Grid for Student Cards -->
+        <div id="roster-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 items-start">
+            <!-- Student cards will be injected here by JavaScript -->
+        </div>
+
+    </main>
+
+    <script>
+        // Splash Screen Logic
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash-screen');
+            // Keep splash screen visible for 1.8 seconds, then slide it up
+            setTimeout(() => {
+                splash.style.transform = 'translateY(-100%)';
+                splash.style.opacity = '0';
+                
+                // Remove from DOM after transition completes
+                setTimeout(() => {
+                    splash.remove();
+                }, 700);
+            }, 1800);
+        });
+
+        const STUDENTS = [
+            { id: "231032", name: "Md Tareq Khan", mobile: "+8801877609159", bg: "O+", guardian: "Tania Tanvin", relation: "Mother", contact1: "+8801732343544", contact2: "+8801888766013" },
+            { id: "241019", name: "Suvassha Biswas", mobile: "+8801616682249", bg: "O+", guardian: "Saymol Kumer Biswas", relation: "Father", contact1: "+8801912635667", contact2: "+8801912635668" },
+            { id: "241028", name: "Kaniz Fatema Keya", mobile: "+8801714545508", bg: "O+", guardian: "T.M. Kafil Uddin", relation: "Father", contact1: "+880 1712963624", contact2: "+8801615-589381" },
+            { id: "251002", name: "Ashiqur Rahman", mobile: "+8801534214484", bg: "B+", guardian: "Zebun Nahar", relation: "Mother", contact1: "+8801729285898", contact2: "+8801713001037" },
+            { id: "251003", name: "Arghya Mondal", mobile: "+8801709085085", bg: "B+", guardian: "Pabitra Biswas", relation: "Mother", contact1: "+8801918788875", contact2: "+8801916494943" },
+            { id: "251004", name: "Khan Md. Mostofa Nazeef", mobile: "+8801340258278", bg: "O+", guardian: "Shahnaz Shamsi", relation: "Paternal Aunt", contact1: "+8801718597979", contact2: "+8801713111133" },
+            { id: "251005", name: "Mumtak Haque", mobile: "+8801300369183", bg: "O+", guardian: "Md. Ashraful Haque", relation: "Father", contact1: "+8801718789198", contact2: "+8801742186375" },
+            { id: "251006", name: "Fariha Jannat", mobile: "+8801736122625", bg: "B+", guardian: "Selena Akter", relation: "Mother", contact1: "+8801965541533", contact2: "+8801609655801" },
+            { id: "251007", name: "Jannatul Mahi", mobile: "+8801752359401", bg: "O+", guardian: "Abdul Mojid", relation: "Father", contact1: "+8801713399450", contact2: "+8801794272057" },
+            { id: "251008", name: "Kaniz Fatema", mobile: "+8801925895371", bg: "A+", guardian: "Rubia Sultana", relation: "Mother", contact1: "+8801925895371", contact2: "+8801716226292" },
+            { id: "251010", name: "Md. Sakib Hasan", mobile: "+8801626221626", bg: "A+", guardian: "Md. Atiqul Islam", relation: "Father", contact1: "+8801712417383", contact2: "+8801933547131" },
+            { id: "251012", name: "Saima Sultana Mim", mobile: "+8801727498353", bg: "A+", guardian: "Md.Mostafigur Rahman", relation: "Father", contact1: "+8801712333894", contact2: "+8801731494790" },
+            { id: "251014", name: "Sheikh Sajnin Nahar", mobile: "+8801933857257", bg: "O+", guardian: "Yesmin Parvin Doly", relation: "Mother", contact1: "+8801768-691595", contact2: "+8801908616747" },
+            { id: "251015", name: "Bandhan Biswas Durjoy", mobile: "+8801318365342", bg: "O+", guardian: "Ruma Saha", relation: "Mother", contact1: "+8801712700674", contact2: "+8801554204401" },
+            { id: "251016", name: "Mst. Ritu Khatun", mobile: "+8801788634393", bg: "B+", guardian: "Rinky", relation: "Sister", contact1: "+8801910920320", contact2: "+8801937288982" },
+            { id: "251017", name: "Jayita Roy", mobile: "+8801788501954", bg: "B+", guardian: "Bithika Roy", relation: "Mother", contact1: "+8801747805931", contact2: "+8801718927782" },
+            { id: "251019", name: "S.M. Rafin Farhan", mobile: "+8801533011394", bg: "AB+", guardian: "Momena Khanum", relation: "Mother", contact1: "+8801711354642", contact2: "+8801644800157" },
+            { id: "251020", name: "Annasha Saha Arthi", mobile: "+8801405586334", bg: "A+", guardian: "Kazal Rani Saha", relation: "Mother", contact1: "+8801715781884", contact2: "+8801726746832" },
+            { id: "251021", name: "Tagrida Tabassum Subata", mobile: "+8801845136337", bg: "A+", guardian: "Md.Jahangir Alam", relation: "Father", contact1: "+8801726504153", contact2: "+8801522122304" },
+            { id: "251022", name: "Sardar Jannat Fatima Ahona", mobile: "+8801911397703", bg: "B-", guardian: "Kaniz Fatima Swarna", relation: "Mother", contact1: "+8801935659040", contact2: "+8801972659040" },
+            { id: "251023", name: "Md. Muradul Islam", mobile: "+8801838803098", bg: "O+", guardian: "Salma Khatun", relation: "Mother", contact1: "+8801304566118", contact2: "+8801304566118" },
+            { id: "251027", name: "S.M.Tausifuzzaman", mobile: "+8801943489093", bg: "B+", guardian: "S.K.M.Tasaduzzaman", relation: "Father", contact1: "+8801711275255", contact2: "+8801611275255" },
+            { id: "251028", name: "MD.Abu Zihad", mobile: "+8801945224826", bg: "O+", guardian: "MD.Jahangir Alam", relation: "Father", contact1: "+8801719535253", contact2: "+8801625688826" },
+            { id: "251029", name: "Md. Lazim Uddin", mobile: "+8801522119458", bg: "AB+", guardian: "Md. Kutub Uddin Molla", relation: "Father", contact1: "+8801719686451", contact2: "+8801320685675" },
+            { id: "251030", name: "Lamia saiyara", mobile: "+8801866917201", bg: "O+", guardian: "Md.Hasan Akhtar", relation: "Father", contact1: "+8801716347220", contact2: "+8801888035146" },
+            { id: "251031", name: "Mst. Nahid Sultana Nitu", mobile: "+8801925597549", bg: "O+", guardian: "Suraiya Khatun", relation: "Khalamoni", contact1: "+8801885948581", contact2: "+8801736487406" },
+            { id: "251033", name: "Sadia Afrin", mobile: "+8801718847605", bg: "B+", guardian: "Halima Khatun", relation: "Mother", contact1: "+8801902081303", contact2: "+8801718847605" },
+            { id: "251036", name: "Rudra Kar", mobile: "+8801635420275", bg: "B+", guardian: "Swapan Krishna Kar", relation: "Father", contact1: "+8801710181268", contact2: "+8801739909899" },
+            { id: "251037", name: "S.M. Tawfique Abedine Apon", mobile: "+8801577017205", bg: "O+", guardian: "Tanvir Abedine", relation: "Brother", contact1: "+8801910332815", contact2: "+8801713685189" },
+            { id: "251038", name: "Shahol Ibney Mezba", mobile: "+8801884509989", bg: "O+", guardian: "Sharmin Sultana", relation: "Mother", contact1: "+8801778838348", contact2: "+8801719922563" },
+            { id: "251039", name: "Tagar Chakma", mobile: "+8801916574735", bg: "B+", guardian: "Anutosh Chakma", relation: "Father", contact1: "+8801540183211", contact2: "+8801822530013" },
+            { id: "251040", name: "Aronno Akter", mobile: "+8801327211166", bg: "B+", guardian: "Rojina Khatun", relation: "Mother", contact1: "+8801751646666", contact2: "+8801915756109" },
+            { id: "251041", name: "Ahnaf Tahmid Tashin", mobile: "+8801973665303", bg: "AB+", guardian: "Salim Khan", relation: "Father", contact1: "+8801711397719", contact2: "+8801913317673" }
+        ];
+
+        let searchTerm = '';
+        let expandedId = null;
+
+        const searchInput = document.getElementById('search-input');
+        const clearBtn = document.getElementById('clear-btn');
+        const rosterContainer = document.getElementById('roster-container');
+        const countDisplay = document.getElementById('student-count');
+
+        function toggleExpand(id) {
+            expandedId = expandedId === id ? null : id;
+            renderApp();
+        }
+
+        function renderApp() {
+            // Filter and sort students
+            const filtered = STUDENTS.filter(student => 
+                student.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                student.id.includes(searchTerm)
+            ).sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+            // Update count
+            countDisplay.textContent = `${filtered.length} Found`;
+
+            if (filtered.length === 0) {
+                rosterContainer.innerHTML = `
+                    <div class="col-span-full bg-white border-[3px] border-black p-8 sm:p-10 rounded-xl text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-4">
+                        <i data-lucide="search-x" stroke-width="2" class="mx-auto mb-4 w-10 h-10 sm:w-12 sm:h-12 text-black/50"></i>
+                        <h3 class="font-black text-xl sm:text-2xl uppercase mb-2">No Match</h3>
+                        <p class="font-mono font-bold text-sm sm:text-base text-black/60">Clear search and try again.</p>
+                    </div>
+                `;
+            } else {
+                rosterContainer.innerHTML = filtered.map(student => {
+                    const isExpanded = expandedId === student.id;
+                    
+                    let secondaryContactHTML = '';
+                    if (student.contact2 && student.contact2 !== student.contact1) {
+                        secondaryContactHTML = `
+                            <a href="tel:${student.contact2}" class="flex items-center justify-between bg-white text-black border-[3px] border-black py-3 px-4 rounded-xl font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all hover:bg-slate-100">
+                                <span class="text-xs sm:text-sm uppercase tracking-tight">Sec: ${student.contact2}</span>
+                                <i data-lucide="phone" stroke-width="3" class="w-4 h-4 shrink-0 ml-2"></i>
+                            </a>
+                        `;
+                    }
+
+                    return `
+                        <div class="bg-white border-[3px] border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col">
+                            
+                            <!-- Card Header: Focus heavily on ID & Name -->
+                            <button onclick="toggleExpand('${student.id}')" class="w-full text-left flex flex-row items-stretch outline-none group bg-white hover:bg-slate-50 transition-colors">
+                                
+                                <!-- Huge ID Block -->
+                                <div class="bg-black text-white p-2.5 sm:p-4 w-20 sm:w-28 flex flex-col justify-center items-center shrink-0 border-r-[3px] border-black">
+                                    <span class="text-[8px] sm:text-[10px] text-lime-400 font-mono font-bold uppercase tracking-widest mb-0.5">ID No.</span>
+                                    <span class="text-lg sm:text-2xl font-black tracking-tighter">${student.id}</span>
+                                </div>
+                                
+                                <!-- Name & Info Area -->
+                                <div class="p-3 sm:p-4 flex-1 flex flex-col justify-center gap-1 overflow-hidden">
+                                    <div class="flex justify-between items-start gap-2">
+                                        <h3 class="font-black text-black text-base sm:text-xl leading-tight uppercase tracking-tight truncate">
+                                            ${student.name}
+                                        </h3>
+                                        <div class="shrink-0 mt-0.5 sm:mt-0">
+                                            <i data-lucide="chevron-down" stroke-width="3" class="w-4 h-4 sm:w-5 sm:h-5 text-black/50 transition-transform duration-300 group-hover:text-black ${isExpanded ? 'rotate-180 text-black' : 'rotate-0'}"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="bg-yellow-300 text-black px-1.5 py-0.5 text-[10px] sm:text-xs font-black border-[2px] border-black rounded shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                                            ${student.bg}
+                                        </span>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <!-- Expandable Body -->
+                            <div class="grid transition-all duration-300 ease-in-out bg-slate-50 border-t-[3px] border-black ${isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr] hidden'}">
+                                <div class="overflow-hidden">
+                                    <div class="p-4 sm:p-5 space-y-4">
+                                        
+                                        <!-- Call Student -->
+                                        <a href="tel:${student.mobile}" class="flex items-center justify-between w-full bg-cyan-300 text-black border-[3px] border-black py-3 sm:py-3.5 px-4 sm:px-5 rounded-xl font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all hover:bg-cyan-400">
+                                            <span class="tracking-tight text-sm sm:text-base">Call Student</span>
+                                            <i data-lucide="phone" stroke-width="3" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                        </a>
+
+                                        <!-- Guardian Info Box -->
+                                        <div class="bg-rose-300 border-[3px] border-black rounded-xl p-4 sm:p-5">
+                                            <div class="flex items-center gap-2 text-black font-black uppercase mb-3 text-xs sm:text-sm border-b-[2px] border-black/20 pb-2">
+                                                <i data-lucide="alert-triangle" stroke-width="3" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                                Emergency Contact
+                                            </div>
+                                            
+                                            <div class="mb-4">
+                                                <p class="font-black text-base sm:text-xl uppercase leading-none truncate" title="${student.guardian}">${student.guardian}</p>
+                                                <p class="font-mono text-black/80 font-bold text-[10px] sm:text-sm mt-1 sm:mt-1.5">Relationship: ${student.relation}</p>
+                                            </div>
+                                            
+                                            <div class="flex flex-col gap-3">
+                                                <a href="tel:${student.contact1}" class="flex items-center justify-between bg-white text-black border-[3px] border-black py-3 px-4 rounded-xl font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all hover:bg-slate-100">
+                                                    <span class="text-xs sm:text-base uppercase tracking-tight truncate">Pri: ${student.contact1}</span>
+                                                    <i data-lucide="phone" stroke-width="3" class="w-4 h-4 sm:w-5 sm:h-5 shrink-0 ml-2"></i>
+                                                </a>
+                                                ${secondaryContactHTML}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Re-initialize Lucide icons for the newly injected HTML
+            lucide.createIcons();
+        }
+
+        // Search Input Listener
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            if (searchTerm.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderApp();
+        });
+
+        // Clear Button Listener
+        clearBtn.addEventListener('click', () => {
+            searchTerm = '';
+            searchInput.value = '';
+            clearBtn.classList.add('hidden');
+            renderApp();
+            searchInput.focus();
+        });
+
+        // Initial Render
+        renderApp();
+        // Initial icon load for static elements (header)
+        lucide.createIcons();
+    </script>
+</body>
+</html>
